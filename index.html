@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base target="_top" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Quick Start - Leaflet</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* .leaflet-container {
+        height: 600px;
+        width: 600px;
+        max-width: 100%;
+        max-height: 100%;
+      } */
+
+    .card {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    /* Estilos de la imagen dentro de la tarjeta */
+    /* .card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+      } */
+
+    /* Estilos del texto de la descripción */
+    /*   .card p {
+        margin-top: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+ */
+    /* Estilos del reproductor de Spotify */
+    /*  .spotify-player {
+        margin-top: 10px;
+      } */
+    #floating-button {
+      position: absolute;
+      z-index: 1000;
+      background-color: #007bff;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      bottom: 20px;
+      /* Espacio desde la parte inferior */
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <h1>Map with leaflet</h1> -->
+  <div id="map" style="width: 100%; height: 100%"></div>
+  <script>
+    markers = [
+      { name: 'La Sazon de doña Flor ', podcastUrl: 'https://open.spotify.com/embed/episode/2dH8S8T0bsCJwQNU1Ug66Y?utm_source=generator', lat: 3.4832680, lng: -76.4213182, description: 'Este podcast nos habla sobre el restaurante de doña flor que es un lugar donde visualmente llegan muchas personas las cuales acuden por el sazon qu ella le da a sus comidas por ser del pacífico ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/01-Yoselin-Evelin', },
+      { name: 'La historia de los motorratones', podcastUrl: 'https://open.spotify.com/embed/episode/4lXYKyvSGkHGl24OSpSTV8?utm_source=generator', lat: 3.48387, lng: -76.423243, description: 'En esta crónica hablamos de una antigua labor que es la de los motorratone, tomamos en cuenta la opinión de usuarios como también de quienes ejercen esta labor en el corregmiento ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/02-Juan_Esteban_Escobar-Santiago_Ramirez', },
+      { name: 'Producción Lechera', podcastUrl: 'https://open.spotify.com/embed/episode/3MpA20XhbFGSa1RxKGWsXU?utm_source=generator', lat: 3.5045285, lng: -76.4197665, description: 'En el siguiente podcast vamos a conocer la importancia del sector lechero en nuestra zona, qué actividades culturales se desarrollan alredor de esta práctica y qué problematicas enfrentan. ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/03-Kevin_Arley_Perdomo-Johan_Alexis_Telles', },
+      { name: 'Gallo contra Gallo ', podcastUrl: 'https://open.spotify.com/embed/episode/4x7wpwGVb8TpkxRSQr2GRz?utm_source=generator', lat: 3.5052560, lng: -76.4163595, description: 'En este podcast hablaremos sobre el gallinero que es un espacio amplio en el que se llevan a cabo las peleas de gallos y la forma en que los crian para tener mejor resistencia en los combates', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/04-Camila_Caracas-Tania_Isabel_Ortiz', },
+      { name: ' ¡Salud! por Griselda Ocoró ', podcastUrl: 'https://open.spotify.com/embed/episode/1xXsUgCzSADmwJUKogFHMC?utm_source=generator', lat: 3.483938, lng: -76.422932, description: 'Esta es la historia de la única promotora de salud de nuestro pueblo y de la inestabilidad de los servicios de salud del corregimiento el Guanbanal', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/05-Juan_Felipe_Garcia-Hilary_Vanessa_Mosquera', },
+      { name: 'La inmaculada concepción:  Historia de una iglesia contada por sus fieles', podcastUrl: 'https://open.spotify.com/embed/episode/7jKpPWbyYJXG5ERYigBjsL?utm_source=generator', lat: 3.484478, lng: -76.423219, description: 'Este podcast  nos cuenta como  la iglesia del Guanbanal se ha convertido un lugar emblemático para la comunidad y la forma en durante las festividades religiosas se llena de fieles que acuden a rendir homenaje a su santa patrona. ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/06-Nicol_Chaguendo-Brayan_Trujillo', },
+      { name: 'El que tenga tienda que la atienda, así como don Edinson ', podcastUrl: 'https://open.spotify.com/embed/episode/6RgHEvoh6bArQj76jLWdPc?utm_source=generator', lat: 3.483913, lng: -76.423308, description: 'La tienda de don Edinson para el corregimiento el Guanabanal, donde sus habitantes compran todo lo necesario para las actividades del hogar. La misma comunidad la considera importante por las cosas que ofrece', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/07-Richard_Martinez-Kevin_Cobo', },
+      { name: 'Más que un parque ', podcastUrl: 'https://open.spotify.com/embed/episode/6EnZ3yEfZyWkC9jire9n2q?utm_source=generator', lat: 3.483231, lng: -76.424841, description: 'En este podcast mostramos como el parque del pueblo se ha convertido en un escenario cultural y deportivo en la comunidad del Guanabanal ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/08-Damian_Urbano-Camilo_Valencia', },
+      { name: 'La cancha de Barrio Nuevo ', podcastUrl: 'https://open.spotify.com/embed/episode/6ITM1q8jlav9YnCKBch3Kd?utm_source=generator', lat: 3.477850, lng: -76.395349, description: 'En Barrio Nuevo uno de los espacios culturales más importante para la comunidad es la cancha de fútbol donde se celebran eventos para la comunidad misma. Esta cancha existe hace más de 56 años y fue donada por el señor Juan Ulloa. En este podcsat revivimos la lucha de la comunidad por conservar un espacio que se ha apropiado con el paso de los años ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/09-Alejandro_Ramos-Sebastian_Cuellar', },
+      { name: 'La chica, pequeña e histórica ', podcastUrl: 'https://open.spotify.com/embed/episode/6dNQFw5XGF03r9FlSvmoG1?utm_source=generator', lat: 3.4786473, lng: -76.4312340, description: 'Este podcast revive los recuerdos y vivencias por las que ha pasado la hacienda La Chica. Esta finca tiene aproximadamente 120 años, llega a los corazones de los más viejos a los más jóvenes', customIcon: '02-MARCADOR-CULTURA', imageUrl: '01_trabajos_9-1/10-Maria_Jose_Lasprilla-Marcel_Viviana_Cundumi', },
+
+
+      { name: 'Los jóvenes y el alcohol ', podcastUrl: 'https://open.spotify.com/embed/episode/5WEsjFhrUwO6EJ3L7LsHjY?utm_source=generator', lat: 3.483803, lng: -76.425877, description: 'Este podcast explora la forma en que el consumo de alcohol se ha naturalizado en las juventudes del corregimiento y la forma en que influye en los adolescentes de este corregimiento escondido entre la caña más conocido como el Guanabanal', customIcon: '03-MARCADOR-PROBLEMAS-SOCIALES', imageUrl: '02_trabajos_9-2/01-Camilo_Ocoro-Samir_Rojas', },
+      { name: 'Pasión sin límites', podcastUrl: 'https://open.spotify.com/embed/episode/7F4pUe0qGFuNqkCX8wpGHn?utm_source=generator', lat: 3.483261, lng: -76.423965, description: 'En este podcast vamos hablar de la tradición  futbolera del corregimiento el Guanabanal y la forma en que afectan algunas formas de entender el barrismo afectan al pueblo en la convivencia y la tranquilidad.                                     ', customIcon: '02-MARCADOR-CULTURA', imageUrl: '02_trabajos_9-2/02-Emanuel_Romero-Daniel_Duque', },
+      { name: 'Ya se fue el tren', podcastUrl: 'https://open.spotify.com/embed/episode/6HAz8x2ls7hxQmyXSj1lQ7?utm_source=generator', lat: 3.483847, lng: -76.428087, description: 'La historia de una joven llamada Daniela que tuvo que subsistir y tomar una complicada decisión de vivir en la estación abandonada del tren que está en el centro del corregimiento, un tren que dejó de funcionar hace varios años ya. Las dificultades que tuvo que enfrentar como la falta de los servicios públicos, además de las continuas exigencias que le llegaban para que desalojara aquel sitio que pertenece al ferrocarril del pacífico.', customIcon: '02-MARCADOR-CULTURA', imageUrl: '02_trabajos_9-2/03-Diego_Romero_Jose_Manuel_Valverde', },
+      { name: 'Droga daña caminos', podcastUrl: 'https://open.spotify.com/embed/episode/5TWbQ2c0wot6bjipPKc9IJ?utm_source=generator', lat: 3.483111, lng: -76.424800, description: 'En nuestro podcast se contará un poco sobre la situación de nuestro corregimiento sobre el problema social que es la drogadicción. contaremos una historia donde se plantea una situación referente a este problema, saber cómo fue el daño en la familia, y como lograron llevarlo.  dejar una enseñanza para que piensen más de dos veces que quieren para si vida.', customIcon: '03-MARCADOR-PROBLEMAS-SOCIALES', imageUrl: '02_trabajos_9-2/05-Maria_Jose_Doronsoro-Silvana_Borrero', },
+      { name: 'Un recorrido por la memoria de las haciendas. ', podcastUrl: 'https://open.spotify.com/embed/episode/6Se2Zr03gcGo9XhSYOfPLp?utm_source=generator', lat: 3.485612, lng: -76.431748, description: '"Este podcast fue producido teniendo como  base distintas investigaciones relacionadas con la historia, producción y relevancia en las haciendas de las comunidades del Guanabanal, Caucaseco, La unión y Barrio Nuevo"', customIcon: '02-MARCADOR-CULTURA', imageUrl: '02_trabajos_9-2/08-Juan_Pablo_Rosero-Ricardo_Marmolejo', },
+      { name: 'Haciendas, sucesos y apariciones ', podcastUrl: 'https://open.spotify.com/embed/episode/2oq41bsf4KEAsQGsw0mJi5?utm_source=generator', lat: 3.495001, lng: -76.422305, description: ' En este podcast se contara brevemente cómo las haciendas han apoyado tanto al municipio como al corregimiento  en alimentación,  economía y el subsistir de personas trabajadoras de estos lugares .', customIcon: '02-MARCADOR-CULTURA', imageUrl: '02_trabajos_9-2/09-Juan_Diego_Herrrera-Jasson_Finscue', },
+      { name: 'La ignorancia nos hace personas violentas. ', podcastUrl: 'https://open.spotify.com/embed/episode/6mmcroCf0M4NtrAgOm8ciC?utm_source=generator', lat: 3.485265, lng: -76.422328, description: 'En este podcats intetaremos abordar el gran problema de la violencia que rodea los corregimientos de Palmasesca y Guanabanal,qué la detona y la forma en que la hemos naturalizado en nuestro comportamiento cotidiano. ', customIcon: '03-MARCADOR-PROBLEMAS-SOCIALES', imageUrl: '02_trabajos_9-2/11-Esteban_Paredes', },
+
+      { name: 'Granja la Gabriela. Un proyecto ganadero de sostenible.', url: 'https://www.youtube.com/embed/dQOVWcd82gI', lat: 3.483170, lng: -76.430007, description: 'Este ejercicio audiovisual nos encontramos  con una historia de la ganadería sana, que no provoca contaminación ambiental ni problemas sociales, es más bien un punto de gran beneficio para la comunidad.', customIcon: '04-MARCADOR-AMBIENTAL', },
+    ];
+    const map = L.map("map").setView([3.484066, -76.424969], 18);
+
+    const tiles = L.tileLayer(
+      "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib3NjYXI5NzA1IiwiYSI6ImNraGV2ampvbjA4OTEzNW1nNjNyN3Z1cTYifQ.O29kCJJjUrVtsvRYdatF6w",
+      {
+        maxZoom: 20,
+        attribution:
+          '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>',
+      }
+    ).addTo(map);
+
+    for (var i = 0; i < markers.length; ++i) {
+      let popup = "";
+      if (
+        ["01-MARCADOR-PERFILES", "04-MARCADOR-AMBIENTAL"].includes(
+          markers[i].customIcon
+        )
+      ) {
+        popup +=
+          "<iframe width='300' height='300' src='" +
+          markers[i].url +
+          "' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>" +
+          "<p>" +
+          markers[i].description +
+          "</p>";
+      } else {
+        popup +=
+          "<div class='card'><img src='./images/" +
+          markers[i].imageUrl +
+          ".png' alt='Descripción de la imagen'></div>" +
+          "<p>" +
+          markers[i].description +
+          "</p>" +
+          "<div class='spotify-player'><iframe src='" +
+          markers[i].podcastUrl +
+          "' width='100%' height='100' frameborder='0' allowtransparency='true' allow='encrypted-media'></iframe></div>";
+      }
+      L.marker([markers[i].lat, markers[i].lng], {
+        icon: L.icon({
+          iconUrl: `./images/${markers[i].customIcon}.png`,
+          iconSize: [50, 50], // Tamaño del icono en píxeles
+          iconAnchor: [16, 32], // Punto de anclaje del icono (centro inferior)
+        }),
+      })
+        .bindPopup(popup)
+        .addTo(map);
+    }
+    // Marcadores ambiental y perfiles va video - descripción
+    // Marcadores problemas sociales y culturales, imagen - descripción - podcast
+
+
+
+    function onMapClick(e) {
+      L.popup()
+        .setLatLng(e.latlng)
+        .setContent(`You clicked the map at ${e.latlng.toString()}`)
+        .openOn(map);
+    }
+
+    map.on("click", onMapClick);
+
+    const markerElements = document.querySelectorAll(
+      ".leaflet-marker-icon"
+    );
+
+    markerElements.forEach((element) => {
+      console.log(element);
+    });
+    let currentIndex = 0;
+    let autoFocusInterval;
+
+    function startAutoFocus() {
+      autoFocusInterval = setInterval(changeFocus, 2000); // Cambiar cada 2 segundos
+    }
+
+    function changeFocus() {
+      elements[currentIndex].focus();
+      currentIndex = (currentIndex + 1) % elements.length; // Avanzar al siguiente elemento
+    }
+  </script>
+
+  <button id="floating-button" ">
+      Cambiar Enfoque Automáticamente
+    </button>
+  </body>
+</html>

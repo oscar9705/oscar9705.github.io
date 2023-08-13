@@ -107,7 +107,7 @@
         popup +=
           "<div class='card'><img src='./images/" +
           markers[i].imageUrl +
-          ".png' alt='Descripción de la imagen'></div>" +
+          ".jpg' alt='Descripción de la imagen'></div>" +
           "<p>" +
           markers[i].description +
           "</p>" +
@@ -117,7 +117,7 @@
       }
       L.marker([markers[i].lat, markers[i].lng], {
         icon: L.icon({
-          iconUrl: `./images/${markers[i].customIcon}.jpg`,
+          iconUrl: `./images/${markers[i].customIcon}.png`,
           iconSize: [50, 50], // Tamaño del icono en píxeles
           iconAnchor: [16, 32], // Punto de anclaje del icono (centro inferior)
         }),
